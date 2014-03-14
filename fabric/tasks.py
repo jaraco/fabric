@@ -376,7 +376,8 @@ def execute(task, *args, **kwargs):
                     task, host, my_env, args, new_kwargs, jobs, queue,
                     multiprocessing
                 )
-            except NetworkError, e:
+            except NetworkError:
+                e = sys.exc_info()[1]
                 results[host] = e
                 # Backwards compat test re: whether to use an exception or
                 # abort

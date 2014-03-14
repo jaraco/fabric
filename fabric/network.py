@@ -19,10 +19,15 @@ from fabric.utils import abort, handle_prompt_abort, warn
 from fabric.exceptions import NetworkError
 
 try:
+    input = raw_input
+except NameError:
+    pass
+
+try:
     import warnings
     warnings.simplefilter('ignore', DeprecationWarning)
     import paramiko as ssh
-except ImportError, e:
+except ImportError:
     import traceback
     traceback.print_exc()
     msg = """
@@ -235,7 +240,8 @@ def key_from_env(passphrase=None):
                 sys.stderr.write("Trying to load it as %s\n" % pkey_class)
             try:
                 return pkey_class.from_private_key(StringIO(env.key), passphrase)
-            except Exception, e:
+            except Exception:
+                e = sys.exc_info()[1]
                 # File is valid key, but is encrypted: raise it, this will
                 # cause cxn loop to prompt for passphrase & retry
                 if 'Private key file is encrypted' in e:
@@ -453,14 +459,16 @@ def connect(user, host, port, cache, seek_gateway=True):
         # BadHostKeyException corresponds to key mismatch, i.e. what on the
         # command line results in the big banner error about man-in-the-middle
         # attacks.
-        except ssh.BadHostKeyException, e:
+        except ssh.BadHostKeyException:
+            e = sys.exc_info()[1]
             raise NetworkError("Host key for %s did not match pre-existing key! Server's key was changed recently, or possible man-in-the-middle attack." % host, e)
         # Prompt for new password to try on auth failure
         except (
             ssh.AuthenticationException,
             ssh.PasswordRequiredException,
             ssh.SSHException
-        ), e:
+        ):
+            e = sys.exc_info()[1]
             msg = str(e)
             # If we get SSHExceptionError and the exception message indicates
             # SSH protocol banner read failures, assume it's caused by the
@@ -529,11 +537,13 @@ def connect(user, host, port, cache, seek_gateway=True):
             print('')
             sys.exit(0)
         # Handle DNS error / name lookup failure
-        except socket.gaierror, e:
+        except socket.gaierror:
+            e = sys.exc_info()[1]
             raise NetworkError('Name lookup failed for %s' % host, e)
         # Handle timeouts and retries, including generic errors
         # NOTE: In 2.6, socket.error subclasses IOError
-        except socket.error, e:
+        except socket.error:
+            e = sys.exc_info()[1]
             not_timeout = type(e) is not socket.timeout
             giving_up = _tried_enough(tries)
             # Baseline error msg for when debug is off
@@ -633,7 +643,7 @@ def needs_host(func):
     def host_prompting_wrapper(*args, **kwargs):
         while not env.get('host_string', False):
             handle_prompt_abort("the target host connection string")
-            host_string = raw_input("No hosts found. Please specify (single)"
+            host_string = input("No hosts found. Please specify (single)"
                                     " host string for connection: ")
             env.update(to_dict(host_string))
         return func(*args, **kwargs)
