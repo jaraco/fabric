@@ -83,7 +83,7 @@ default_ssh_config_path = '~/.ssh/config'
 # optparse.NO_DEFAULT (currently a two-tuple)! In general, None is a better
 # default than ''.
 #
-# User-facing documentation for these are kept in docs/env.rst.
+# User-facing documentation for these are kept in sites/docs/env.rst.
 env_options = [
 
     make_option('-a', '--no_agent',
@@ -315,6 +315,7 @@ env = _AttributeDict({
     'default_port': default_port,
     'eagerly_disconnect': False,
     'echo_stdin': True,
+    'effective_roles': [],
     'exclude_hosts': [],
     'gateway': None,
     'host': None,

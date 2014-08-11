@@ -43,13 +43,14 @@ def is_link(path, use_sudo=False, verbose=False):
 
     If ``use_sudo`` is True, will use `.sudo` instead of `.run`.
 
-    `.is_link` will, by default, hide all output. Give ``verbose=True`` to change this.
+    `.is_link` will, by default, hide all output. Give ``verbose=True`` to
+    change this.
     """
     func = sudo if use_sudo else run
     cmd = 'test -L "$(echo %s)"' % path
     args, kwargs = [], {'warn_only': True}
     if not verbose:
-        opts = [hide('everything')]
+        args = [hide('everything')]
     with settings(*args, **kwargs):
         return func(cmd).succeeded
 
@@ -57,7 +58,8 @@ def is_link(path, use_sudo=False, verbose=False):
 def first(*args, **kwargs):
     """
     Given one or more file paths, returns first one found, or None if none
-    exist. May specify ``use_sudo`` and ``verbose`` which are passed to `exists`.
+    exist. May specify ``use_sudo`` and ``verbose`` which are passed to
+    `exists`.
     """
     for directory in args:
         if exists(directory, **kwargs):
@@ -115,7 +117,7 @@ def upload_template(filename, destination, context=None, use_jinja=False,
     # Use mode kwarg to implement mirror_local_mode, again due to using
     # StringIO
     if mirror_local_mode and mode is None:
-        mode = os.stat(filename).st_mode
+        mode = os.stat(apply_lcwd(filename, env)).st_mode
         # To prevent put() from trying to do this
         # logic itself
         mirror_local_mode = False
@@ -138,6 +140,8 @@ def upload_template(filename, destination, context=None, use_jinja=False,
             tb = traceback.format_exc()
             abort(tb + "\nUnable to import Jinja2 -- see above.")
     else:
+        if template_dir:
+            filename = os.path.join(template_dir, filename)
         filename = apply_lcwd(filename, env)
         with open(os.path.expanduser(filename)) as inputfile:
             text = inputfile.read()

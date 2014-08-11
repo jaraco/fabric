@@ -3,8 +3,8 @@ Development roadmap
 ===================
 
 This document outlines Fabric's intended development path. Please make sure
-you're reading `the latest version
-<http://docs.fabfile.org/en/latest/roadmap.html>`_ of this document! 
+you're reading `the latest version <http://fabfile.org/roadmap.html>`_ of this
+document!
 
 .. warning::
     This information is subject to change without warning, and should not be
@@ -55,11 +55,9 @@ tool, and plan to:
     * Any other core overhauls difficult to do in a backwards compatible
       fashion.
     * Test-driven development (Invoke does this as well.)
-    * Requires Paramiko to become Python 3 compatible - one of the major
-      hurdles to overcome. See `Paramiko #16
-      <https://github.com/paramiko/paramiko/issues/16>`_.
 
-* Spin off ``fabric.contrib.*`` into a standalone "super-Fabric" (as in, "above Fabric") library, `Patchwork <https://github.com/fabric/patchwork>`_.
+* Spin off ``fabric.contrib.*`` into a standalone "super-Fabric" (as in, "above
+  Fabric") library, `Patchwork <https://github.com/fabric/patchwork>`_.
 
     * This lets core "execute commands on hosts" functionality iterate
       separately from "commonly useful shortcuts using Fabric core".
