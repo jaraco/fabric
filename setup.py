@@ -8,6 +8,9 @@ from fabric.version import get_version
 
 
 long_description = """
+Fabric3bis is a fork of `Fabric3 <https://github.com/mathiasertl/fabric>`_
+to provide a package that's available on PyPI.
+
 Fabric3 is a fork of `Fabric <http://fabfile.org>`_ to provide compatability
 with Python 3.4+. The port still works with Python 2.7.
 
@@ -26,15 +29,15 @@ install_requires=['paramiko>=1.15.3', 'six>=1.9.0']
 
 
 setup(
-    name='Fabric3',
+    name='Fabric3bis',
     version=get_version('short'),
     description='Fabric is a simple, Pythonic tool for remote execution and deployment (py2.7/py3.4+ compatible fork).',
     long_description=long_description,
     author='Jeff Forcier',
     author_email='jeff@bitprophet.org',
-    maintainer='Mathias Ertl',
-    maintainer_email='mati@er.tl',
-    url='https://github.com/mathiasertl/fabric/',
+    maintainer='Jason R. Coombs',
+    maintainer_email='jaraco@jaraco.com',
+    url='https://github.com/jaraco/fabric/',
     packages=find_packages(),
     test_suite='nose.collector',
     tests_require=['nose', 'fudge<1.0', 'jinja2'],
