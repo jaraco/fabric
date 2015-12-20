@@ -8,8 +8,11 @@ from fabric.version import get_version
 
 
 long_description = """
-Fabric3bis is a fork of `Fabric3 <https://github.com/mathiasertl/fabric>`_
-to provide a package that's available on PyPI.
+Fabric3bis is a deprecated fork of
+`Fabric3 <https://github.com/mathiasertl/fabric>`_
+which is `now available on PyPI
+<https://pypi.python.org/pypi/Fabric3>`_. Don't
+use this package. Use Fabric3 instead.
 
 Fabric3 is a fork of `Fabric <http://fabfile.org>`_ to provide compatability
 with Python 3.4+. The port still works with Python 2.7.
